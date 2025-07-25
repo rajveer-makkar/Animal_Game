@@ -1,82 +1,108 @@
-import java.util.Random;
-public class NatureFeature{
-    private char featureType;
-    private String featureName;
-    private int spacePenalty;
-    private int creekCount=0;
-    private int bridgeCount=0;
-    private int treeCount=0;
-    private int landslideCount=0;
+/**
+* This defines the nature features that players can encounter on the trail.
+* Each feature has a type, name and space penalty.
+*
+* Examples: Creek, Bridge, Fallen Tree, Ladder.
+* 
+* @author Rushil
+* @version 1.0
+*/
+public class NatureFeature
+{
+    private final char featureType;
+    private final String featureName;
+    private final int spacePenalty; 
+    // number of spaces player needs to move upon landing on this nature feature
 
+    /**
+    * Represents the absense of a nature feature
+    */
+    public static final NatureFeature NONE = new NatureFeature('_');
 
-    public NatureFeature(char type){
-        this.featureType=type;
-        assignFeature(type);
-
+    /**
+    * Default constructor- creates a feature with no penalty.
+    */
+    public NatureFeature()
+    {
+        this.featureType = '_';
+        this.featureName = "None";
+        this.spacePenalty = 0;
     }
-    public void assignFeature(char type) {
-        switch (type) {
+    
+    /**
+    * Creates a nature features for the game, based on the specified
+    * feature type.
+    * Handles Creek, Bridge, Fallen Tree, Ladder, None.
+    *
+    * @param featureType The character feature code for this feature.
+    */
+    public NatureFeature(char featureType)
+    {
+        this.featureType = Character.toLowerCase(featureType);
+        switch(featureType)
+        {
             case 'c':
-                if ((Game.easyFlag && creekCount >= 1) || (Game.complexFlag && creekCount >= 3)) {
-                    assignFeature(getRandomType());
-                    return;
-                }
                 featureName = "Creek";
                 spacePenalty = -2;
-                creekCount += 1;
                 break;
-
             case 'b':
-                if ((Game.easyFlag && bridgeCount >= 1) || (Game.complexFlag && bridgeCount >= 3)) {
-                    assignFeature(getRandomType());
-                    return;
-                }
                 featureName = "Bridge";
-                spacePenalty = +4;
-                bridgeCount += 1;
+                spacePenalty = 4;
                 break;
-
             case 'f':
-                if ((Game.easyFlag && treeCount >= 1) || (Game.complexFlag && treeCount >= 3)) {
-                    assignFeature(getRandomType());
-                    return;
-                }
-                featureName = "Fallen tree";
+                featureName = "Fallen Tree";
                 spacePenalty = -3;
-                treeCount += 1;
                 break;
-
             case 'l':
-                if ((Game.easyFlag && landslideCount >= 1) || (Game.complexFlag && landslideCount >= 3)) {
-                    assignFeature(getRandomType());
-                    return;
-                }
                 featureName = "Landslide";
                 spacePenalty = -5;
-                landslideCount += 1;
                 break;
-
             default:
-                featureName = "Unknown";
+                featureName = "None";
                 spacePenalty = 0;
         }
     }
 
-
-
-    public char getRandomType() {
-        char[] types = {'c', 'b', 'f', 'l'};
-        return types[new Random().nextInt(types.length)];
-    }
-
-
-    public int getPenalty() {
-        return spacePenalty;
-    }
-    public String getName(){
+    /**
+    * Gets the name of this feature. 
+    *
+    * @return The feature name string.
+    */
+    public String getFeatureName()
+    {
         return featureName;
     }
-    public char getType() {
+
+    /**
+    * Gets the type of this feature. 
+    *
+    * @return The feature type character.
+    */
+    public char getFeatureType()
+    {
         return featureType;
     }
+
+    /**
+    * Gets the space penalty of this feature. 
+    *
+    * @return The space penalty.
+    */
+    public int getSpacePenalty()
+    {
+        return spacePenalty;
+    }
+
+    /**
+    * Returns a string representation of this Nature Feature. 
+    *
+    * @return String describing this feature.
+    */
+    public String toString()
+    {
+        return "\nFeature Type: " + featureType + " Feature Name: " + featureName +
+        " Space Penalty: " + spacePenalty + "\n";
+    }
+
+    // mutator methods not needed since fields are final
 }

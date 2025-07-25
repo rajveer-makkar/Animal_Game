@@ -1,40 +1,93 @@
-public class Trail {
-    private NatureFeature[] features;
+/**
+* Trail is an array of nature features.
+* It mimics the trail of nature features player is moving along.
+*
+* @author Rushil
+* @version 1.0
+*/
+public class Trail
+{
+    private final NatureFeature[] natureTrail;
 
-    public Trail(char[] trailData) {
-        features = new NatureFeature[trailData.length];
+    /**
+    * Default constructor - initializes an empty trail.
+    */
+    public Trail()
+    {
+        natureTrail = new NatureFeature[0];
+    }
 
-        for (int i = 0; i < trailData.length; i++) {
-            if (trailData[i] == '_' || trailData[i] == 'S' || trailData[i] == 'F') {
-                features[i] = null;
-            } else {
-                features[i] = new NatureFeature(trailData[i]);
-            }
+    /**
+    * Creates a trail of NatureFeatures from an array of char codes,
+    * where char codes represent nature feature code.
+    *
+    * @param trailChars Array of Characters representing nature feature codes.
+    */
+    public Trail(char[] trailChars)
+    {
+        natureTrail = new NatureFeature[trailChars.length];
+        for (int i = 0; i < trailChars.length; i++)
+        {
+            char c = trailChars[i];
+            natureTrail[i] = (c == '_') ? 
+                    NatureFeature.NONE : 
+                    new NatureFeature(c);
         }
     }
 
-    public NatureFeature getFeatureAt(int pos){
-        if (pos >= 0 && pos < features.length){
-            return features[pos];
+    /**
+    * Gets the length of the trail.
+    *
+    * @return The length of the trail. 
+    */
+    public int getLength()
+    {
+        return natureTrail.length;
+    }
+
+    /**
+    * Gets the trail array of nature features.
+    * 
+    * @return An array of nature features.
+    */
+    public NatureFeature[] getNatureTrail()
+    {
+        return natureTrail;
+    }
+
+    /**
+    * Gets the Nature Feature at the specified position on the trail.
+    * 
+    * @param position The position on the trail [0,length of trail).
+    * @return The nature feature at that position.
+    * @throws GameError If the position is invalid.
+    */
+    public NatureFeature getFeatureAt(int position)
+    {
+        if (position >= 0 && position < natureTrail.length)
+        {
+            return natureTrail[position];
         }
-        else {
-            return null;
+        else
+        {
+            throw GameError.invalidTrailPosition(position, natureTrail.length);
         }
     }
 
-    public int length(){
-        return features.length;
+    /**
+    * Returns a string representation of the trail.
+    *
+    * @return String listing all features in the trail.
+    */
+    public String toString()
+    {
+        StringBuilder trailFeatures = new StringBuilder();
+        for (NatureFeature feature : natureTrail)
+        {
+            trailFeatures.append(feature.toString());
+        }
+        return trailFeatures.toString();
     }
 
-    public void display(int pos1, int pos2){
-        for (int i = 0; i < features.length; i++) {
-            if (i == pos1 && i == pos2) System.out.print("HC ");
-            else if (i == pos1) System.out.print("H ");
-            else if (i == pos2) System.out.print("C ");
-            else if (i == 0) System.out.print("S ");
-            else if (i == features.length - 1) System.out.print("F ");
-            else System.out.print("_ ");
-        }
-        System.out.println();
-    }
+    // no mutators required since field is final
 }
